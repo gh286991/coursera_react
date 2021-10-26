@@ -24,8 +24,69 @@ const styles = {
   },
 };
 
-const DishdetailComponent = ({ menu, selectedDish }) => {
-  const renderDish = (dish) => {
+// const DishDetail = ({ menu, selectedDish }) => {
+//   const renderDish = (dish) => {
+//     if (dish != null)
+//       return (
+//         <>
+//           <div className="col-12 col-md-5 m-1">
+//             <Card style={styles.cardContainer}>
+//               <CardImg top src={dish.image} alt={dish.name} />
+//               <CardBody>
+//                 <CardTitle style={styles.title}>{dish.name}</CardTitle>
+//                 <CardText>{dish.description}</CardText>
+//               </CardBody>
+//             </Card>
+//           </div>
+//         </>
+//       );
+//     else return null;
+//   };
+
+//   const renderComments = (dish) => {
+//     if (dish != null) {
+//       const comments = dish.comments;
+//       return (
+//         <div className="col-12 col-md-5 m-1" style={{ textAlign: 'left' }}>
+//           <div style={styles.comment}>Comment</div>
+//           {comments.map((comment) => {
+//             return (
+//               <div style={{ margin: '20px 0px' }}>
+//                 {comment.comment}
+//                 <br />
+//                 {`-- ${comment.author}  ${new Intl.DateTimeFormat('en-US', {
+//                   year: 'numeric',
+//                   month: 'long',
+//                   day: '2-digit',
+//                 }).format(new Date(comment.date))}`}
+//                 <br />
+//               </div>
+//             );
+//           })}
+//         </div>
+//       );
+//     }
+//     return null;
+//   };
+
+//   return (
+//     <div className="container">
+//       <div className="row">{menu}</div>
+//       <div className="row">
+//         {renderDish(selectedDish)} {renderComments(selectedDish)}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default DishDetail;
+
+// import React from 'react';
+// import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
+
+const DishDetail = (props) => {
+  const { selectedDish, menu } = props;
+  function renderDish(dish) {
     if (dish != null)
       return (
         <>
@@ -41,9 +102,9 @@ const DishdetailComponent = ({ menu, selectedDish }) => {
         </>
       );
     else return null;
-  };
+  }
 
-  const renderComments = (dish) => {
+  function renderComments(dish) {
     if (dish != null) {
       const comments = dish.comments;
       return (
@@ -66,9 +127,7 @@ const DishdetailComponent = ({ menu, selectedDish }) => {
         </div>
       );
     }
-    return null;
-  };
-
+  }
   return (
     <div className="container">
       <div className="row">{menu}</div>
@@ -79,4 +138,4 @@ const DishdetailComponent = ({ menu, selectedDish }) => {
   );
 };
 
-export default DishdetailComponent;
+export default DishDetail;
