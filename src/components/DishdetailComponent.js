@@ -1,138 +1,87 @@
 import React from 'react';
-import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
+import {
+  Card,
+  CardImg,
+  CardImgOverlay,
+  CardTitle,
+  Breadcrumb,
+  BreadcrumbItem,
+  CardBody,
+  CardText,
+} from 'reactstrap';
+import { Link } from 'react-router-dom';
 
-const styles = {
-  title: {
-    width: '100%',
-    fontWeight: 600,
-    fontSize: 28,
-  },
-  cardContainer: {
-    textAlign: 'left',
-  },
-  dishContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    border: '2px red solid',
-  },
-  comment: {
-    fontSize: 28,
-    fontWeight: 600,
-  },
-};
+function RenderDish({ dish }) {
+  if (dish != null) {
+    return (
+      <div className="col-12 col-md-5 m-1">
+        <Card>
+          <CardImg width="100%" src={dish.image} alt={dish.name} />
+          <CardBody>
+            <CardTitle> {dish.name}</CardTitle>
+            <CardText> {dish.description} </CardText>
+          </CardBody>
+        </Card>
+      </div>
+    );
+  } else {
+    return <div></div>;
+  }
+}
 
-// const DishDetail = ({ menu, selectedDish }) => {
-//   const renderDish = (dish) => {
-//     if (dish != null)
-//       return (
-//         <>
-//           <div className="col-12 col-md-5 m-1">
-//             <Card style={styles.cardContainer}>
-//               <CardImg top src={dish.image} alt={dish.name} />
-//               <CardBody>
-//                 <CardTitle style={styles.title}>{dish.name}</CardTitle>
-//                 <CardText>{dish.description}</CardText>
-//               </CardBody>
-//             </Card>
-//           </div>
-//         </>
-//       );
-//     else return null;
-//   };
-
-//   const renderComments = (dish) => {
-//     if (dish != null) {
-//       const comments = dish.comments;
-//       return (
-//         <div className="col-12 col-md-5 m-1" style={{ textAlign: 'left' }}>
-//           <div style={styles.comment}>Comment</div>
-//           {comments.map((comment) => {
-//             return (
-//               <div style={{ margin: '20px 0px' }}>
-//                 {comment.comment}
-//                 <br />
-//                 {`-- ${comment.author}  ${new Intl.DateTimeFormat('en-US', {
-//                   year: 'numeric',
-//                   month: 'long',
-//                   day: '2-digit',
-//                 }).format(new Date(comment.date))}`}
-//                 <br />
-//               </div>
-//             );
-//           })}
-//         </div>
-//       );
-//     }
-//     return null;
-//   };
-
-//   return (
-//     <div className="container">
-//       <div className="row">{menu}</div>
-//       <div className="row">
-//         {renderDish(selectedDish)} {renderComments(selectedDish)}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default DishDetail;
-
-// import React from 'react';
-// import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
+function RenderComments({ comments }) {
+  if (comments == null) {
+    return <div></div>;
+  }
+  const cmnts = comments.map((comment) => {
+    return (
+      <li key={comment.id}>
+        <p>{comment.comment}</p>
+        <p>
+          -- {comment.author}, &nbsp;
+          {new Intl.DateTimeFormat('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: '2-digit',
+          }).format(new Date(comment.date))}
+        </p>
+      </li>
+    );
+  });
+  return (
+    <div className="col-12 col-md-5 m-1">
+      <h4> Comments </h4>
+      <ul className="list-unstyled">{cmnts}</ul>
+    </div>
+  );
+}
 
 const DishDetail = (props) => {
-  const { selectedDish, menu } = props;
-  function renderDish(dish) {
-    if (dish != null)
-      return (
-        <>
-          <div className="col-12 col-md-5 m-1">
-            <Card style={styles.cardContainer}>
-              <CardImg top src={dish.image} alt={dish.name} />
-              <CardBody>
-                <CardTitle style={styles.title}>{dish.name}</CardTitle>
-                <CardText>{dish.description}</CardText>
-              </CardBody>
-            </Card>
-          </div>
-        </>
-      );
-    else return null;
+  const dish = props.dish;
+
+  if (dish == null) {
+    return <div></div>;
   }
 
-  function renderComments(dish) {
-    if (dish != null) {
-      const comments = dish.comments;
-      return (
-        <div className="col-12 col-md-5 m-1" style={{ textAlign: 'left' }}>
-          <div style={styles.comment}>Comment</div>
-          {comments.map((comment) => {
-            return (
-              <div style={{ margin: '20px 0px' }}>
-                {comment.comment}
-                <br />
-                {`-- ${comment.author}  ${new Intl.DateTimeFormat('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: '2-digit',
-                }).format(new Date(comment.date))}`}
-                <br />
-              </div>
-            );
-          })}
-        </div>
-      );
-    }
-  }
   return (
     <div className="container">
-      <div className="row">{menu}</div>
       <div className="row">
-        {renderDish(selectedDish)} {renderComments(selectedDish)}
+        <Breadcrumb>
+          <BreadcrumbItem>
+            <Link to="/menu">Menu</Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+        </Breadcrumb>
+
+        <div className="col-12">
+          <h3> {props.dish.menu}</h3>
+          <hr />
+        </div>
+      </div>
+
+      <div className="row">
+        <RenderDish dish={props.dish} />
+        <RenderComments comments={props.comments} />
       </div>
     </div>
   );
